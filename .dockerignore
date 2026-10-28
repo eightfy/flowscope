@@ -1,0 +1,16 @@
+.git
+.github
+.venv
+.tools
+.playwright
+.npm-cache
+.ghconfig
+frontend
+data
+data.7z
+docs
+*.pptx
+**/__pycache__
+**/*.pyc
+backend/server.log
+backend/server.pid

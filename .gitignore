@@ -1,0 +1,22 @@
+# local environments and caches
+.venv/
+.tools/
+.playwright/
+.npm-cache/
+__pycache__/
+*.pyc
+.DS_Store
+
+# raw data and archives (prepared/ is committed for the API)
+data/
+data.7z
+
+# generated frontend build
+frontend/node_modules/
+frontend/dist/
+
+# local runtime artifacts
+backend/server.log
+backend/server.pid
+
+.ghconfig/
