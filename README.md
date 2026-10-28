@@ -207,3 +207,34 @@ run.sh
 - SARIMA 的季节项在 144/96 周期下会明显变慢，面板默认关闭季节项，可按需开启。
 - 预测区间为残差近似，不是经校准的共形区间。
 - 数据单位保持原始口径：济南为 Bytes，米兰/特伦蒂诺为原始流量单位。
+
+---
+
+## 7. 在线部署
+
+- 前端（GitHub Pages）：https://eightfy.github.io/flowscope/
+- 后端 API（Render）：https://flowscope-api-eightfy.onrender.com
+- 源码仓库：https://github.com/eightfy/flowscope
+
+### 前端
+
+`.github/workflows/pages.yml` 在 `main` 分支推送时构建 `frontend/dist` 并部署到 GitHub Pages。构建时读取仓库变量 `VITE_API_URL`，写入前端 API 地址。
+
+```bash
+# 更换后端地址后重新部署
+gh variable set VITE_API_URL --repo eightfy/flowscope --body https://<api-host>
+gh workflow run pages.yml --repo eightfy/flowscope
+```
+
+Vite 使用 `base: './'`，因此项目页可以部署在任意子路径下；前端使用 hash 路由，不需要额外的 404 重写。
+
+### 后端
+
+`Dockerfile` 以 `python:3.12-slim` 安装依赖，复制 `backend/` 与 `prepared/`，启动 `uvicorn`。`render.yaml` 定义免费 Docker Web Service。
+
+1. 打开 https://render.com/deploy?repo=https://github.com/eightfy/flowscope
+2. 用 GitHub 登录并确认 Blueprint
+3. 等待健康检查 `/api/health` 通过
+4. 把服务 URL 写入 GitHub 变量 `VITE_API_URL`，重新运行 Pages workflow
+
+Render 免费实例在空闲后会休眠，首次请求需要几十秒冷启动；训练任务受免费 CPU 限制，复杂模型会比本地慢。
