@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: flowscope-api
+    name: flowscope-api-eightfy
     runtime: docker
     plan: free
     region: singapore
